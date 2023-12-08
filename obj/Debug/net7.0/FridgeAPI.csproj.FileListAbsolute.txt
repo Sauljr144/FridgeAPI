@@ -75,3 +75,4 @@
 /Users/ssuazoportillo/Desktop/CSAcademy/Level-5/FridgeAPI/obj/Debug/net7.0/FridgeAPI.pdb
 /Users/ssuazoportillo/Desktop/CSAcademy/Level-5/FridgeAPI/obj/Debug/net7.0/FridgeAPI.genruntimeconfig.cache
 /Users/ssuazoportillo/Desktop/CSAcademy/Level-5/FridgeAPI/obj/Debug/net7.0/ref/FridgeAPI.dll
+/Users/ssuazoportillo/Desktop/CSAcademy/Level-5/FridgeAPI/obj/Debug/net7.0/FridgeAPI.sourcelink.json
