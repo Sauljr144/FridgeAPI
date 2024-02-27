@@ -39,19 +39,19 @@ namespace FridgeAPI.Services
         }
 
         //Update fridge item
-          public bool UpdateFridgeItems(FridgeItemModel ItemUpdate)
+        public bool UpdateFridgeItems(FridgeItemModel ItemUpdate)
         {
             _context.Update<FridgeItemModel>(ItemUpdate);
-               return _context.SaveChanges() != 0;
+            return _context.SaveChanges() != 0;
         }
 
         //Delete fridge item
-             public bool DeleteFridgeItem(FridgeItemModel ItemDelete)
+        public bool DeleteFridgeItem(FridgeItemModel ItemDelete)
         {
             _context.Update<FridgeItemModel>(ItemDelete);
             return _context.SaveChanges() != 0;
         }
-        
+
         //Delete All fridge items
         public bool DeleteAllFridgeItems()
         {
