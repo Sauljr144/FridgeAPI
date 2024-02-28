@@ -11,7 +11,8 @@ namespace FridgeAPI.Services.Context
     {
         public DbSet<FridgeItemModel> FridgeItemInfo { get; set; }
         public DbSet<ShoppingItemModel> ShoppingItemInfo { get; set; }
-      
+        public DbSet<UserModel> Users { get; set; }
+       
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
