@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FridgeAPI.Models;
-using FridgeAPI.Services;
+using FridgeAPI.Services.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace FridgeAPI.Controllers
 {
@@ -14,54 +15,100 @@ namespace FridgeAPI.Controllers
     [Route("[controller]")]
     public class FridgeController : ControllerBase
     {
-        private readonly FridgeItemService _data;
+         private readonly DataContext _context;
 
-        public FridgeController(FridgeItemService dataFromService)
+        public FridgeController(DataContext context)
         {
-            _data = dataFromService;
+            _context = context;
         }
 
-        //Add a fridge item to the database
-        [HttpPost("AddFridgeItems")]
-        public bool AddFridgeItems(FridgeItemModel newFridgeItem)
+        [HttpGet]
+        public async Task<IEnumerable<FridgeItemModel>> GetFridgeItems()
         {
-            return _data.AddFridgeItem(newFridgeItem);
+            var fridgeItems = await _context.FridgeItemInfo.AsNoTracking().ToListAsync();
+            return fridgeItems;
         }
 
-        //Get All Fridge Items
-        [HttpGet("GetFridgeItems")]
-        public IEnumerable<FridgeItemModel> GetAllFridgeItems()
+        [HttpPost]
+        public async Task<IActionResult> Create(FridgeItemModel fridgeItem)
         {
-            return _data.GetAllFridgeItems();
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _context.AddAsync(fridgeItem);
+            var result = await _context.SaveChangesAsync();
+
+            if(result > 0)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
-        //Get fridge items by category
-        [HttpGet("GetItemsByCategory/{Category}")]
-        public IEnumerable<FridgeItemModel> GetItemsByCategory(string Category)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> EditFridgeItem(int id, FridgeItemModel fridgeItem)
         {
-            return _data.GetItemsByCategory(Category);
+            var itemStored = await _context.FridgeItemInfo.FindAsync(id);
+            if(itemStored == null)
+            {
+                return BadRequest();
+            }
+
+            itemStored.FridgeItemName = fridgeItem.FridgeItemName;
+            itemStored.Quantity = fridgeItem.Quantity;
+            itemStored.ExpirationDate = fridgeItem.ExpirationDate;
+            itemStored.Category = fridgeItem.Category;
+            itemStored.IsDeleted = fridgeItem.IsDeleted;
+
+            var result = await _context.SaveChangesAsync();
+
+            if(result > 0)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
-        //Update fridge item
-        [HttpPost("UpdateFridgeItem")]
-        public bool UpdateFridgeItems(FridgeItemModel ItemUpdate)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteFridgeItem(int id)
         {
-            return _data.UpdateFridgeItems(ItemUpdate);
+            var itemStored = await _context.FridgeItemInfo.FindAsync(id);
+            if(itemStored == null)
+            {
+                return BadRequest();
+            }
+
+            _context.Remove(itemStored);
+            var result = await _context.SaveChangesAsync();
+
+            if(result > 0)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
-        //Delete fridge item
-        [HttpPost("DeleteFridgeItem/{FridgeItemToDelete}")]
-        public bool DeleteFridgeItem(FridgeItemModel ItemDelete)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAllFridgeItems()
         {
-            return _data.DeleteFridgeItem(ItemDelete);
+            var itemsStored = await _context.FridgeItemInfo.ToListAsync();
+            if(itemsStored == null)
+            {
+                return BadRequest();
+            }
+
+            _context.RemoveRange(itemsStored);
+            var result = await _context.SaveChangesAsync();
+
+            if(result > 0)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
 
-        //Delete All fridge items
-        [HttpPost("DeleteAllFridgeItems")]
-        public bool DeleteAllFridgeItems()
-        {
-            return _data.DeleteAllFridgeItems();
-        }
 
     }
 }
