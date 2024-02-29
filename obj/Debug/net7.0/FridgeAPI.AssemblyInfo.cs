@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FridgeAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+90df37850b5f83814cd577fc4a279816af134518")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f8d6c76ae70ff3f5488e55f382ab2486be58437c")]
 [assembly: System.Reflection.AssemblyProductAttribute("FridgeAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FridgeAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
